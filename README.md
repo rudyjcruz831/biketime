@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+# Create React App with Lambda funciton
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Create React App using Amplify to host 
+    a. I also added the code to make a request to API gateway that is open to everyone (I was try to secure but did not have time)
+    b. I wrote code to get a image from a form in the React app
+    c. All code is in the App.js
+    d. Not really good at frontend
 
-## Available Scripts
+2. Created Lambda Function in python
+ a. I just wrote a simple script that take the files and addes to S3 Bucket
+ b. I also added the function to this repo is the python filed named lambd_function.py
+ c. I ran into an error but It had to do with the way I was setting up my API Gateway
+ d. I added permisison to the lambda function to be able to access S3
+    ![image info](./imgs/Screenshot2.png)
+    ![image info](./imgs/Screenshot1.png)
 
-In the project directory, you can run:
+3. Created API Gateway for the fontend React app to communicate with Lambda function
+ a. I created the API gatway for it to also function as a trigger to the Lambda function
+ b. There was a few settings I need to complete before the API Gateway could be ready under API setting I need to manage what type of Binary media types I would allow. This I cause me a few headaches
+    ![image info](./imgs/Screenshot3.png)
 
-### `npm start`
+ c. Next I had to set up a route to send the request to so I ccreated a route "/upload" it was a POST request. 
+    ![image info](./imgs/Screenshot4.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+ d. I also had to do changes to the integration request to accept binary media types
+    ![image info](./imgs/Screenshot5.png)
+ e. After that all that was left was diploy it (also this was open to all public)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+ f. Finally added the API Gateway as a trigger for the Lambda function so anytime that that route is hit it would invoke the Lambda fucntion
+    ![image info](./imgs/Screenshot6.png)
 
-### `npm test`
+4. Create a S3 bucket
+    ![image info](./imgs/Screenshot7.png)
+ a. The Lambda function added the image we uplaoded triggered by the API gateway. 
+    ![image info](./imgs/Screenshot8.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+5. Here below I added the architecture diagram. I made some in the beginning but It did not go as plan.
+    ![image info](./imgs/Thinking.png)
