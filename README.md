@@ -36,3 +36,16 @@
 
 5. Here below I added the architecture diagram. I made some in the beginning but It did not go as plan.
     ![image info](./imgs/Thinking.png)
+
+
+
+# second part adding DynamoDB
+
+1. I creates a DynamoDB to store metadata 
+a. I created a table called "biketime-table" to store the data 
+b. Made sure that lambda function has enought permission to access DynamoDB to store data
+   ![image info](./imgs/Screenshot9.png)
+c. Then I used the lambda function to get the metadata from S3 then I stored using the name of the image as index
+   ![image info](./imgs/Screenshot10.png)
+
+   This part all I had to do is update the code to get the metadata then send it to DynamoDB

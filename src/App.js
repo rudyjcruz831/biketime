@@ -15,30 +15,31 @@ function Form() {
     })
     fileReader.readAsDataURL(e.target.files[0])
 
+    
     // Get the API Gateway URL from environment variables
-    const baseURL = process.env.AWS_APIGATEWAY;
+    // const baseURL = process.env.AWS_APIGATEWAY;
 
     // Define the request data, if needed
-    const requestData = {
-      'image': fileReader.readAsDataURL(e.target.files[0])
-    }; // Add your request data here if needed
+    // const requestData = {
+    //   'image': fileReader.readAsDataURL(e.target.files[0])
+    // }; // Add your request data here if needed
 
 
-    // Define headers
-    const headers = {
-      'Content-Type': 'application/png', // Corrected content type
-    };
+    // // Define headers
+    // const headers = {
+    //   'Content-Type': 'application/png', // Corrected content type
+    // };
 
-    // Make the POST request
-    axios.post(baseURL + '/upload', requestData, { headers })
-    .then(response => {
-      // Handle the response here, for example:
-      console.log('Response:', response.data);
-    })
-    .catch(error => {
-      // Handle any errors
-      console.error('Error:', error);
-    });
+    // // Make the POST request
+    // axios.post(baseURL + '/upload', requestData, { headers })
+    // .then(response => {
+    //   // Handle the response here, for example:
+    //   console.log('Response:', response.data);
+    // })
+    // .catch(error => {
+    //   // Handle any errors
+    //   console.error('Error:', error);
+    // });
     
 
   };
