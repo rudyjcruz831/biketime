@@ -1,46 +1,42 @@
-import base64
 import json
+import base64
 import boto3
-import random
 import string
+import random
 
 def lambda_handler(event, context):
-    
-    s3 = boto3.client('s3')
-    try:
-        if "body-json" not in event:
-            return {
-                'statusCode': 400,
-                'body': json.dumps('Error: Missing body-json in the event data.')
-            }
-        
+    s3 = boto3.client("s3")
+    dynamodb = boto3.resource('dynamodb')
+  
+    try: 
         get_file_content = event["body-json"]
-        
-        # Convert string to bytes if necessary
-        if isinstance(get_file_content, str):
-            binary_data = get_file_content.encode('utf-8')
-        else:
-            binary_data = get_file_content
-        # decode_content = base64.b64decode(get_file_content).encode('utf-8')
-
-
-        # Ensure that the content is properly encoded in base64
-        encoded_data = base64.b64encode(binary_data).decode('utf-8')
-
-        # Continue with your logic...
-        decode_content = base64.b64decode(encoded_data)
-
+        decode_content = base64.b64decode(get_file_content)
         pic_filename = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+    
+        # Upload image to S3
+        s3_upload = s3.put_object(Bucket="biketime-img", Key=f"{pic_filename}.png", Body=decode_content, ContentType='image/png')
         
-        s3_upload = s3.put_object(Bucket="biketime-img",Key=pic_filename+".png",Body=decode_content)
-
+        # Get image metadata
+        image_metadata = s3.head_object(Bucket='biketime-img', Key=f"{pic_filename}.png")
+        
+        content_length = image_metadata['ContentLength']
+        last_modified = str(image_metadata['LastModified'])  # Convert to string
+        
+        # Add metadata to DynamoDB
+        table = dynamodb.Table('biketime-table')
+        table.put_item(Item={
+            'name': str(pic_filename),
+            'size': str(content_length),
+            'time': last_modified
+        })
         
         return {
             'statusCode': 200,
-            'body': json.dumps('The Object is Uploaded successfully!')
+            'body': json.dumps("WOhoo")
         }
     except Exception as e:
+        # Return an error message if any exception occurs
         return {
             'statusCode': 500,
-            'body': json.dumps('Error: {}'.format(str(e)))
+            'body': json.dumps(f'Error: {str(e)}')
         }
